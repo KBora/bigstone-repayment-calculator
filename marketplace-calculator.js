@@ -41,6 +41,7 @@ function calculate_estimate(loan_amount, term, business_state, personal_credit) 
             "weekly_repayment_amount": repayment_amount / 52 }
 }
 
+
 /* Sample usage
    Term is in months. Either 3, 6, 9, or 12
    Business state and Personal credit start at 1. So values are either 1, 2, 3, or 4.
@@ -50,14 +51,71 @@ console.debug("monthly_interest_rate  : ", result["monthly_interest_rate"])
 console.debug("repayment_amount       : ", result["repayment_amount"])
 console.debug("weekly_repayment_amount: ", result["weekly_repayment_amount"])
 */
+
+accounting.settings.currency.precision = 0;
+
 $(document).ready(function () {
-    // on click on submit button, calculate values and populate table
+    // on click of the submit button, calculate rates and populate table
+
     $("#calculateRepayments").click( function() {
-        var loan_amount = $('#loanAmount').val();
-        var term = $('input[name=term]:checked').val();
+        var loan_amount = parseInt($('#loanAmount').val());
+        var term = parseInt($('input[name=term]:checked').val());
+        var repaymentFrequency = parseInt($('#repaymentFrequency').val());
+        var currentRepayment = parseInt($('#currentRepayment').val());
 
-        console.log(loan_amount + " " + term);
+        var rates = { 
+        							Low: 
+        								{ 
+        									business_state: 1,
+        									personal_credit: 1
+        								},
+        							Average:
+        								{ business_state: 2,
+        									personal_credit: 3
+        								},
+        							High: 
+        								{ business_state: 4,
+        									personal_credit: 4
+        								}
+        						};
 
+        var frequencyMatrix = {
+        	perWeek 	: { perYear: 52, perMonth: 52/12},
+        	perMonth 	: { perYear: 12, perMonth: 1},
+        	perQuarter: { perYear: 4,  perMonth: 4/12}
+        }
+
+
+        for(var rate in rates) {
+
+        	var result = calculate_estimate(loan_amount, 
+        		term, 
+        		rates[rate]["business_state"], 
+        		rates[rate]["personal_credit"]);
+
+        	$("#rate" + rate).html( result["interest_rate"] + "%");
+
+        	var repaymentAmount = result["repayment_amount"]/repaymentFrequency;
+
+        	$("#repayment" + rate).html( accounting.formatMoney(repaymentAmount));
+
+					$("#savings" + rate).html( accounting.formatMoney(currentRepayment-repaymentAmount));
+
+
+					var totalCurrentRepayment = currentRepayment * term * repaymentFrequency / 12;
+					console.log("totalRepayment: " + result["repayment_amount"] );
+					console.log("totalCurrentRepayment: " + totalCurrentRepayment);
+
+				  $("#savingsTotal" + rate).html( accounting.formatMoney(totalCurrentRepayment-result["repayment_amount"]));
+
+
+        }
+
+        $('#repaymentFrequencyDsp')
+        .html($("#repaymentFrequency option:selected" ).text().toLowerCase())
+   
+
+   
 
         // $('#rateLow').html("hello");
 

@@ -16,7 +16,7 @@
 
         <fieldset>
             <strong>Amount needed:</strong><br>
-            <input id="loanAmount" type="number" name="amount" min="10000" max="250000" step="10000">
+            <input id="loanAmount" type="number" name="amount" min="10000" max="250000" step="10000" value="10000">
             <strong>Repaid over:</strong><br>
             <span style="margin-right:15px"><input type="radio" name="term" value="3"
                                                    checked> 3 Months</span>
@@ -28,11 +28,11 @@
                                                    checked> 18 Months</span>
             <span><input type="radio" name="term" value="24 months" checked> 24 Months</span><br><br>
             <strong>You are currently asked to repay</strong><br>
-            <input type="number" name="amount" min="100" max="25000" step="10">
-            <select name="frequency">
-                <option value="week">Per week</option>
-                <option value="month">Per month</option>
-                <option value="quarter">Per quarter</option>
+            <input id="currentRepayment" type="number" name="amount" min="100" max="25000" step="10">
+            <select id="repaymentFrequency" name="frequency">
+                <option value="52">Per week</option>
+                <option value="12">Per month</option>
+                <option value="4">Per quarter</option>
             </select>
             <input type="submit" value="Submit" id="calculateRepayments"
                    style="text-align:center;padding:15px 20px;background-color:#f9790c;font-size:21px;color:#fff;font-weight:bold;border-radius:5px;text-transform:capitalise;">
@@ -40,7 +40,7 @@
 
 </div>
 <div>
-    <h2 style="text-align:center">Repayments <span id="repaymentFrequency"></span></h2>
+    <h2 style="text-align:center">Repayments <span id="repaymentFrequencyDsp"></span></h2>
     <table style="text-align:center;margin-left:auto;margin-right:auto;font-size:30px">
         <tr>
             <td style="width:300px;background-color:#407cc9;color:#fff">
@@ -93,13 +93,13 @@
                 <p>Total saving over course of loan</p>
             </td>
             <td>
-                <div id="savingsOverallLow"></div>
+                <div id="savingsTotalLow"></div>
             </td>
             <td>
-                <div id="savingsOverallMedium"></div>
+                <div id="savingsTotalAverage"></div>
             </td>
             <td>
-                <div id="savingsOverallHigh"></div>
+                <div id="savingsTotalHigh"></div>
             </td>
         </tr>
     </table>
@@ -114,7 +114,9 @@
 
 
 <script src="https://static.hsstatic.net/jquery-libs/static-1.4/jquery/jquery-1.11.2.js"></script>
+<script src="accounting.js"></script>
 <script src="marketplace-calculator.js"></script>
+
 
 <!-- CODE ENDS HERE -->
 
