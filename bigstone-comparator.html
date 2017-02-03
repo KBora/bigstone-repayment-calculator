@@ -28,11 +28,11 @@
                                                    checked> 18 Months</span>
             <span><input type="radio" name="term" value="24 months" checked> 24 Months</span><br><br>
             <strong>You are currently asked to repay</strong><br>
-            <input id="currentRepayment" type="number" name="amount" min="100" max="25000" step="10">
+            <input id="existingRepayment" type="number" name="amount" min="100" max="25000" step="10">
             <select id="repaymentFrequency" name="frequency">
-                <option value="52">Per week</option>
-                <option value="12">Per month</option>
-                <option value="4">Per quarter</option>
+                <option value="week">Per week</option>
+                <option value="month">Per month</option>
+                <option value="quarter">Per quarter</option>
             </select>
             <input type="submit" value="Submit" id="calculateRepayments"
                    style="text-align:center;padding:15px 20px;background-color:#f9790c;font-size:21px;color:#fff;font-weight:bold;border-radius:5px;text-transform:capitalise;">
