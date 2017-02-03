@@ -44,11 +44,24 @@ function calculate_estimate(loan_amount, term, business_state, personal_credit) 
 /* Sample usage
    Term is in months. Either 3, 6, 9, or 12
    Business state and Personal credit start at 1. So values are either 1, 2, 3, or 4.
-*/
 result = calculate_estimate(10000, 12, 3, 3);
 console.debug("interest_rate          : ", result["interest_rate"])
 console.debug("monthly_interest_rate  : ", result["monthly_interest_rate"])
 console.debug("repayment_amount       : ", result["repayment_amount"])
 console.debug("weekly_repayment_amount: ", result["weekly_repayment_amount"])
+*/
+$(document).ready(function () {
+    // on click on submit button, calculate values and populate table
+    $("#calculateRepayments").click( function() {
+        var loan_amount = $('#loanAmount').val();
+        var term = $('input[name=term]:checked').val();
 
+        console.log(loan_amount + " " + term);
+
+
+        // $('#rateLow').html("hello");
+
+    });
+
+});
 

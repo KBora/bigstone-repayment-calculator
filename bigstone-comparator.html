@@ -13,20 +13,20 @@
 
 <!-- CODE STARTS HERE -->
 <div>
-    <form action="action">
+
         <fieldset>
             <strong>Amount needed:</strong><br>
-            <input type="number" name="amount" min="10000" max="250000" step="10000">
+            <input id="loanAmount" type="number" name="amount" min="10000" max="250000" step="10000">
             <strong>Repaid over:</strong><br>
-            <span style="margin-right:15px"><input type="radio" name="duration" value="3 months"
+            <span style="margin-right:15px"><input type="radio" name="term" value="3"
                                                    checked> 3 Months</span>
-            <span style="margin-right:15px"><input type="radio" name="duration" value="6 months"
+            <span style="margin-right:15px"><input type="radio" name="term" value="6"
                                                    checked> 6 Months</span>
-            <span style="margin-right:15px"><input type="radio" name="duration" value="12 months"
+            <span style="margin-right:15px"><input type="radio" name="term" value="12"
                                                    checked> 12 Months</span>
-            <span style="margin-right:15px"><input type="radio" name="duration" value="18 months"
+            <span style="margin-right:15px"><input type="radio" name="term" value="18"
                                                    checked> 18 Months</span>
-            <span><input type="radio" name="duration" value="24 months" checked> 24 Months</span><br><br>
+            <span><input type="radio" name="term" value="24 months" checked> 24 Months</span><br><br>
             <strong>You are currently asked to repay</strong><br>
             <input type="number" name="amount" min="100" max="25000" step="10">
             <select name="frequency">
@@ -37,7 +37,7 @@
             <input type="submit" value="Submit" id="calculateRepayments"
                    style="text-align:center;padding:15px 20px;background-color:#f9790c;font-size:21px;color:#fff;font-weight:bold;border-radius:5px;text-transform:capitalise;">
         </fieldset>
-    </form>
+
 </div>
 <div>
     <h2 style="text-align:center">Repayments <span id="repaymentFrequency"></span></h2>
@@ -113,16 +113,10 @@
 </div>
 
 
-<script>
-
-</script>
-
+<script src="https://static.hsstatic.net/jquery-libs/static-1.4/jquery/jquery-1.11.2.js"></script>
 <script src="marketplace-calculator.js"></script>
 
 <!-- CODE ENDS HERE -->
-
-<script src="https://static.hsstatic.net/jquery-libs/static-1.4/jquery/jquery-1.11.2.js"></script>
-
 
 </body>
 </html>
