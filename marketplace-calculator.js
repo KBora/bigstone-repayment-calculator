@@ -41,6 +41,11 @@ function calculate_estimate(loan_amount, term, business_state, personal_credit) 
             "weekly_repayment_amount": total_repayment_amount / 52}
 }
 
+var filterInt = function(value) {
+  if (/([0-9]+)$/.test(value))
+    return Number(value);
+  return NaN;
+}
 
 /* Sample usage
    Term is in months. Either 3, 6, 9, or 12
@@ -60,54 +65,75 @@ $(document).ready(function () {
     // on click of the submit button, calculate rates and populate table
 
     $("#calculateRepayments").click( function() {
-        var loan_amount = parseInt($('#loanAmount').val());
+
+        var loan_amount = filterInt($('#loan_amount').val());
         var term_months = parseInt($('input[name=term]:checked').val());
-        var repayment_frequency = $('#repaymentFrequency').val();
-        var existing_repayment = parseInt($('#existingRepayment').val());
-        var rate_parameters = { 
-        							Low: 
-        								{ 
-        									business_state: 1,
-        									personal_credit: 1
-        								},
-        							Average:
-        								{ business_state: 2,
-        									personal_credit: 3
-        								},
-        							High: 
-        								{ business_state: 4,
-        									personal_credit: 4
-        								}
-        						};
-        var times_per_year = {
-        	week 		: 52,
-        	month 	: 12,
-        	quarter	: 4
+        var repayment_frequency = $('#repayment_frequency').val();
+        var existing_repayment = filterInt($('#existing_repayment').val());
+        var valid_form = true;
+
+        if (isNaN(loan_amount)) {
+        	$('#loan_amount_error')
+        	.html('Please enter an amount')
+        	.removeClass('hidden');
+        	valid_form = false;
+        } 
+       	if (isNaN(existing_repayment)) {
+        	$('#existing_repayment_error')
+        	.html('Please enter an existing repayment amount')
+        	.removeClass('hidden');
+        	valid_form = false;
+        } 
+
+        if (valid_form) {
+	 				var rate_parameters = { 
+	        							low: 
+	        								{ 
+	        									business_state: 1,
+	        									personal_credit: 1
+	        								},
+	        							average:
+	        								{ business_state: 2,
+	        									personal_credit: 3
+	        								},
+	        							high: 
+	        								{ business_state: 4,
+	        									personal_credit: 4
+	        								}
+	        						};
+	        var times_per_year = {
+	        	week 		: 52,
+	        	month 	: 12,
+	        	quarter	: 4
+	        }
+
+	        var no_of_repayments = term_months * times_per_year[repayment_frequency] / 12;
+
+	        for(var rate in rate_parameters) {
+
+	        	var bigstone = calculate_estimate(loan_amount, 
+	        		term_months, 
+	        		rate_parameters[rate]["business_state"], 
+	        		rate_parameters[rate]["personal_credit"]);
+
+	        	var bigstone_repayment = bigstone["total_repayment_amount"] / no_of_repayments;
+
+	        	var total_existing_repayment = existing_repayment * no_of_repayments;
+
+	        	$("#rate_" + rate).html( bigstone["interest_rate"] + "%");
+	        	$("#repayment_" + rate).html( accounting.formatMoney(bigstone_repayment));
+						$("#savings_" + rate).html( accounting.formatMoney(existing_repayment - bigstone_repayment));
+					  $("#savings_total_" + rate).html( accounting.formatMoney(total_existing_repayment - bigstone["total_repayment_amount"]));
+
+	        }
+
+	        $('#repayment_frequency_dsp')
+	        .html($("#repayment_frequency option:selected" ).text().toLowerCase())
+
+	        $('#loan_amount_error, #existing_repayment_error').addClass('hidden');
+
         }
 
-        var no_of_repayments = term_months * times_per_year[repayment_frequency] / 12;
-
-        for(var rate in rate_parameters) {
-
-        	var bigstone = calculate_estimate(loan_amount, 
-        		term_months, 
-        		rate_parameters[rate]["business_state"], 
-        		rate_parameters[rate]["personal_credit"]);
-
-        	var bigstone_repayment = bigstone["total_repayment_amount"] / no_of_repayments;
-
-        	var total_existing_repayment = existing_repayment * no_of_repayments;
-
-        	$("#rate" + rate).html( bigstone["interest_rate"] + "%");
-        	$("#repayment" + rate).html( accounting.formatMoney(bigstone_repayment));
-					$("#savings" + rate).html( accounting.formatMoney(existing_repayment - bigstone_repayment));
-				  $("#savingsTotal" + rate).html( accounting.formatMoney(total_existing_repayment - bigstone["total_repayment_amount"]));
-
-        }
-
-        $('#repaymentFrequencyDsp')
-        .html($("#repaymentFrequency option:selected" ).text().toLowerCase())
-   
     });
 
 });
