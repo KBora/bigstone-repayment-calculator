@@ -47,18 +47,6 @@ var filterInt = function(value) {
   return NaN;
 }
 
-/* Sample usage
-   Term is in months. Either 3, 6, 9, or 12
-   Business state and Personal credit start at 1. So values are either 1, 2, 3, or 4.
-   
-result = calculate_estimate(10000, 12, 3, 3);
-console.debug("interest_rate          : ", result["interest_rate"])
-console.debug("monthly_interest_rate  : ", result["monthly_interest_rate"])
-console.debug("total epayment_amount       : ", result["repayment_amount"])
-console.debug("weekly_repayment_amount: ", result["weekly_repayment_amount"]) // this is wrong as it assumes the term is 12 months
-
-*/
-
 accounting.settings.currency.precision = 0;
 
 $(document).ready(function () {
@@ -87,17 +75,14 @@ $(document).ready(function () {
 
         if (valid_form) {
 	 				var rate_parameters = { 
-	        							low: 
-	        								{ 
+	        							low: { 
 	        									business_state: 1,
 	        									personal_credit: 1
 	        								},
-	        							average:
-	        								{ business_state: 2,
+	        							average:{ business_state: 2,
 	        									personal_credit: 3
 	        								},
-	        							high: 
-	        								{ business_state: 4,
+	        							high: { business_state: 4,
 	        									personal_credit: 4
 	        								}
 	        						};
@@ -110,7 +95,6 @@ $(document).ready(function () {
 	        var no_of_repayments = term_months * times_per_year[repayment_frequency] / 12;
 
 	        for(var rate in rate_parameters) {
-
 	        	var bigstone = calculate_estimate(loan_amount, 
 	        		term_months, 
 	        		rate_parameters[rate]["business_state"], 
@@ -124,17 +108,13 @@ $(document).ready(function () {
 	        	$("#repayment_" + rate).html( accounting.formatMoney(bigstone_repayment));
 						$("#savings_" + rate).html( accounting.formatMoney(existing_repayment - bigstone_repayment));
 					  $("#savings_total_" + rate).html( accounting.formatMoney(total_existing_repayment - bigstone["total_repayment_amount"]));
-
 	        }
 
 	        $('#repayment_frequency_dsp')
-	        .html($("#repayment_frequency option:selected" ).text().toLowerCase())
+	        	.html($("#repayment_frequency option:selected" ).text().toLowerCase())
 
 	        $('#loan_amount_error, #existing_repayment_error').addClass('hidden');
-
         }
-
     });
-
 });
 
